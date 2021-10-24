@@ -2,17 +2,42 @@
 
 window.addEventListener("load", start);
 
-const textElement = document.querySelector("#typewriter").textContent;
+// const textElement = document.querySelector("#typewriter").textContent;
+const textElements = document.querySelectorAll(".typewritten");
+console.log(textElements);
 const sound1 = document.querySelector("#typekey1");
 const sound2 = document.querySelector("#typekey2");
 const randomSounds = [sound1, sound2];
 const soundCheck = document.querySelector("#sound-check");
+
+let outerIterator;
+let maxNumberOfOuterIterations;
+// let string;
+let textElement;
 
 let iterator;
 let maxNumberOfIteration;
 let text;
 
 function start() {
+  maxNumberOfOuterIterations = textElements.length;
+  outerIterator = 0;
+  outerLoopInit();
+}
+
+function outerLoopInit() {
+  if (outerIterator < maxNumberOfOuterIterations) {
+    outerIterator++;
+    console.log(textElements);
+    console.log(outerIterator - 1);
+    console.log(textElements[outerIterator - 1]);
+    textElement = textElements[outerIterator - 1].textContent;
+
+    loopInit();
+  }
+}
+
+function loopInit() {
   maxNumberOfIteration = textElement.length + 1;
   // console.log(maxNumberOfIteration);
   iterator = 0;
@@ -42,13 +67,16 @@ function loop() {
     }
 
     setTimeout(loop, getRandomDelay());
-    document.querySelector("#typewriter").innerHTML = text.trim();
+    // document.querySelector("#typewriter").innerHTML = text.trim();
+    textElements[outerIterator - 1].textContent = text.trim();
   } else {
     if (soundCheck.checked) {
       console.log("play return");
       document.querySelector("#typereturn").play();
     }
   }
+
+  setTimeout(outerLoopInit, 500);
 }
 
 function getRandomSound() {
